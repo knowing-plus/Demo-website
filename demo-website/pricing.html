@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tickets & Pricing – AquaVenture India</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Plus+Jakarta+Sans:wght@400;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48; }
+  .glass-panel {
+    background: rgba(255,255,255,0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.4);
+    transition: all 0.3s ease;
+  }
+  .glass-panel:hover { background: rgba(255,255,255,0.6); transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,103,127,0.1); }
+  .sunset-glow {
+    background: linear-gradient(135deg, #da3717 0%, #b41f00 100%);
+    box-shadow: 0 4px 20px rgba(218,55,23,0.35);
+    transition: box-shadow 0.3s, transform 0.2s;
+  }
+  .sunset-glow:hover { box-shadow: 0 8px 35px rgba(218,55,23,0.55); transform: scale(1.02); }
+  .sunset-glow:active { transform: scale(0.97); }
+  .vip-glow { box-shadow: 0 0 50px rgba(0,103,127,0.25); }
+  .nav-glass {
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-bottom: 1px solid rgba(255,255,255,0.3);
+    box-shadow: 0 8px 32px rgba(0,103,127,0.12);
+  }
+  body { animation: fadeIn 0.4s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  #mobile-menu { display: none; }
+  #mobile-menu.open { display: flex; }
+  /* Date picker */
+  .date-btn { transition: all 0.2s; }
+  .date-btn.selected { background: #00677f; color: white; border-color: #00677f; }
+  /* FAQ accordion */
+  .faq-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+  .faq-content.open { max-height: 200px; }
+  .faq-icon { transition: transform 0.3s; }
+  .faq-item.open .faq-icon { transform: rotate(45deg); }
+</style>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#00677f", "on-primary": "#ffffff",
+          "primary-container": "#00d2ff", "on-primary-container": "#00566a",
+          "primary-fixed": "#b6ebff", "primary-fixed-dim": "#47d6ff",
+          "on-primary-fixed": "#001f28",
+          "secondary": "#b41f00", "on-secondary": "#ffffff",
+          "secondary-container": "#da3717", "on-secondary-container": "#fffbff",
+          "secondary-fixed": "#ffdad3", "on-secondary-fixed": "#3e0500",
+          "tertiary": "#055db6", "on-tertiary": "#ffffff",
+          "tertiary-container": "#a0c2ff",
+          "background": "#f4fafe", "on-background": "#161d1f",
+          "surface": "#f4fafe", "on-surface": "#161d1f",
+          "surface-variant": "#dde3e7", "on-surface-variant": "#3c494e",
+          "surface-container-low": "#eef5f8", "surface-container": "#e8eff2",
+          "surface-container-high": "#e3e9ed", "surface-container-highest": "#dde3e7",
+          "outline": "#6c797f", "outline-variant": "#bbc9cf",
+        },
+        fontFamily: {
+          "display-xl": ["Montserrat"], "headline-lg": ["Montserrat"],
+          "headline-md": ["Montserrat"], "body-md": ["Plus Jakarta Sans"]
+        }
+      }
+    }
+  }
+</script>
+</head>
+<body class="bg-background text-on-background font-['Plus_Jakarta_Sans'] overflow-x-hidden min-h-screen">
+
+<!-- ═══════════════════════ NAVIGATION ═══════════════════════ -->
+<header class="nav-glass fixed top-0 left-0 w-full z-50">
+  <div class="flex justify-between items-center h-20 px-4 md:px-16 max-w-[1280px] mx-auto">
+    <a href="index.html" class="flex items-center gap-3">
+      <span class="material-symbols-outlined text-primary text-3xl">waves</span>
+      <span class="font-['Montserrat'] font-bold text-2xl text-primary tracking-tight">AquaVenture</span>
+    </a>
+    <nav class="hidden md:flex gap-8 items-center">
+      <a href="index.html" class="font-bold text-sm text-on-surface-variant hover:text-secondary transition-all uppercase tracking-wider">Home</a>
+      <a href="attractions.html" class="font-bold text-sm text-on-surface-variant hover:text-secondary transition-all uppercase tracking-wider">Attractions</a>
+      <a href="pricing.html" class="font-bold text-sm text-primary border-b-2 border-primary pb-0.5 transition-all uppercase tracking-wider">Pricing</a>
+      <a href="index.html#gallery" class="font-bold text-sm text-on-surface-variant hover:text-secondary transition-all uppercase tracking-wider">Gallery</a>
+    </nav>
+    <a href="#tickets" class="hidden md:inline-flex sunset-glow text-white px-7 py-3 rounded-full font-bold text-sm">Book Now</a>
+    <button id="hamburger" class="md:hidden flex flex-col gap-1.5 p-2">
+      <span class="block w-6 h-0.5 bg-primary"></span>
+      <span class="block w-6 h-0.5 bg-primary"></span>
+      <span class="block w-6 h-0.5 bg-primary"></span>
+    </button>
+  </div>
+  <div id="mobile-menu" class="flex-col gap-4 px-4 pb-6 nav-glass border-t border-white/20">
+    <a href="index.html" class="font-bold text-sm text-on-surface-variant uppercase tracking-wider">Home</a>
+    <a href="attractions.html" class="font-bold text-sm text-on-surface-variant uppercase tracking-wider">Attractions</a>
+    <a href="pricing.html" class="font-bold text-sm text-primary uppercase tracking-wider">Pricing</a>
+    <a href="#tickets" class="sunset-glow text-white px-6 py-3 rounded-full font-bold text-sm text-center">Book Now</a>
+  </div>
+</header>
+
+<main class="pt-20">
+  <!-- ═══════════════════════ HERO ═══════════════════════ -->
+  <section class="relative h-[614px] flex items-center justify-center overflow-hidden">
+    <div class="absolute inset-0 z-0">
+      <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-2V-zFYG-EXOunC1CCk58X132gOxrOU4Pgxg4uiCOUAxDgkQ4pY0b3dgcvxAoGeb_fu2e6H1UGMon2t-9JP2S8h5lvh0MNaTZRXr1p3yt4bb4kal7tM1f_QG6wFfjDLJtGikhVU4BzqxYlXVU28IwH7XPcwvW6MLxWrhmI1TJGTAfN4DXmwiVl1oCGfRbUkG3qvgbj53S1fQETfaKdHWYyN88nIIGMGft1_3CIj_zZmx4YTWTsSlBJo6VO4tMiClZcPJxUM" alt="AquaVenture sunset pool"/>
+      <div class="absolute inset-0 bg-gradient-to-b from-primary/40 to-background"></div>
+    </div>
+    <div class="relative z-10 text-center max-w-4xl px-4 reveal">
+      <span class="inline-block text-xs font-bold uppercase tracking-[0.25em] text-white/80 border border-white/30 backdrop-blur-sm px-4 py-1.5 rounded-full mb-6">Transparent Pricing</span>
+      <h1 class="font-['Montserrat'] font-extrabold text-[clamp(48px,8vw,80px)] leading-[1.1] tracking-tight text-white mb-4 drop-shadow-2xl">Choose Your Escape</h1>
+      <p class="text-lg text-white/90 max-w-2xl mx-auto leading-relaxed">Experience the ultimate aquatic paradise with our curated packages designed for every type of adventurer.</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ DATE SELECTOR ═══════════════════════ -->
+  <section class="py-8 px-4 md:px-16">
+    <div class="max-w-[1280px] mx-auto glass-panel rounded-3xl p-6">
+      <div class="flex flex-col md:flex-row items-center gap-6">
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-primary text-2xl">calendar_month</span>
+          <span class="font-bold text-on-surface text-sm uppercase tracking-wider">Select Your Visit Date</span>
+        </div>
+        <div class="flex flex-wrap gap-2 flex-1 justify-center md:justify-start" id="date-selector">
+          <!-- Dynamically generated -->
+        </div>
+        <div class="flex items-center gap-2 bg-secondary-fixed/50 rounded-full px-4 py-2">
+          <span class="material-symbols-outlined text-secondary text-lg">info</span>
+          <span class="text-xs font-bold text-secondary">Weekend surcharge: ₹200</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ PRICING TIERS ═══════════════════════ -->
+  <section id="tickets" class="px-4 md:px-16 py-[60px] max-w-[1280px] mx-auto -mt-8 relative z-20">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+      <!-- Couple Pass -->
+      <div class="glass-panel rounded-2xl p-8 flex flex-col justify-between reveal">
+        <div>
+          <span class="material-symbols-outlined text-primary text-4xl block mb-4">favorite</span>
+          <h3 class="font-['Montserrat'] font-bold text-[32px] tracking-tight mt-2">Couple Pass</h3>
+          <p class="text-on-surface-variant font-bold uppercase tracking-widest text-xs mt-1 mb-6">Perfect for Two</p>
+          <div class="mb-8">
+            <span class="font-['Montserrat'] font-bold text-4xl text-primary">₹4,499</span>
+            <span class="text-on-surface-variant text-sm"> / day</span>
+          </div>
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-center gap-3 text-sm">
+              <span class="material-symbols-outlined text-primary text-lg">check_circle</span>All Access Water Park
+            </li>
+            <li class="flex items-center gap-3 text-sm">
+              <span class="material-symbols-outlined text-primary text-lg">check_circle</span>Private Cabana (2 hrs)
+            </li>
+            <li class="flex items-center gap-3 text-sm">
+              <span class="material-symbols-outlined text-primary text-lg">check_circle</span>Welcome Drinks
+            </li>
+            <li class="flex items-center gap-3 text-sm text-outline">
+              <span class="material-symbols-outlined text-outline text-lg">close</span>Photography Package
+            </li>
+            <li class="flex items-center gap-3 text-sm text-outline">
+              <span class="material-symbols-outlined text-outline text-lg">close</span>Spa Access
+            </li>
+          </ul>
+        </div>
+        <button onclick="selectPlan('Couple Pass', 4499)" class="w-full py-4 rounded-full border-2 border-primary text-primary font-bold hover:bg-primary hover:text-white transition-all text-sm">Book Now</button>
+      </div>
+
+      <!-- Family Package -->
+      <div class="glass-panel rounded-2xl p-8 flex flex-col justify-between reveal" style="transition-delay:0.1s">
+        <div>
+          <span class="material-symbols-outlined text-primary text-4xl block mb-4">family_restroom</span>
+          <h3 class="font-['Montserrat'] font-bold text-[32px] tracking-tight mt-2">Family Package</h3>
+          <p class="text-on-surface-variant font-bold uppercase tracking-widest text-xs mt-1 mb-6">Group of 4</p>
+          <div class="mb-8">
+            <span class="font-['Montserrat'] font-bold text-4xl text-primary">₹8,999</span>
+            <span class="text-on-surface-variant text-sm"> / day</span>
+          </div>
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-center gap-3 text-sm">
+              <span class="material-symbols-outlined text-primary text-lg">check_circle</span>All Access + Kids Zone
+            </li>
+            <li class="flex items-center gap-3 text-sm">
+              <span class="material-symbols-outlined text-primary text-lg">check_circle</span>Complimentary Lunch Buffet
+            </li>
+            <li class="flex items-center gap-3 text-sm">
+              <span class="material-symbols-outlined text-primary text-lg">check_circle</span>Professional Photography
+            </li>
+            <li class="flex items-center gap-3 text-sm">
+              <span class="material-symbols-outlined text-primary text-lg">check_circle</span>Priority Entry
+            </li>
+            <li class="flex items-center gap-3 text-sm text-outline">
+              <span class="material-symbols-outlined text-outline text-lg">close</span>Spa Access
+            </li>
+          </ul>
+        </div>
+        <button onclick="selectPlan('Family Package', 8999)" class="w-full py-4 rounded-full border-2 border-primary text-primary font-bold hover:bg-primary hover:text-white transition-all text-sm">Book Now</button>
+      </div>
+
+      <!-- VIP Pass – Featured -->
+      <div class="glass-panel rounded-2xl p-8 flex flex-col justify-between relative vip-glow scale-105 border-primary/40 reveal" style="transition-delay:0.2s">
+        <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-secondary text-white px-5 py-1.5 rounded-full font-bold text-xs tracking-widest uppercase shadow-lg whitespace-nowrap">⭐ Best Value</div>
+        <div>
+          <span class="material-symbols-outlined text-secondary text-4xl block mb-4" style="font-variation-settings:'FILL' 1;">workspace_premium</span>
+          <h3 class="font-['Montserrat'] font-bold text-[32px] tracking-tight mt-2">VIP Pass</h3>
+          <p class="text-on-surface-variant font-bold uppercase tracking-widest text-xs mt-1 mb-6">The Elite Experience</p>
+          <div class="mb-8">
+            <span class="font-['Montserrat'] font-bold text-4xl text-primary">₹12,499</span>
+            <span class="text-on-surface-variant text-sm"> / day</span>
+          </div>
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-center gap-3 text-sm font-bold">
+              <span class="material-symbols-outlined text-secondary text-lg" style="font-variation-settings:'FILL' 1;">stars</span>Priority Slide Access
+            </li>
+            <li class="flex items-center gap-3 text-sm">
+              <span class="material-symbols-outlined text-secondary text-lg">check_circle</span>Luxury Poolside Suite
+            </li>
+            <li class="flex items-center gap-3 text-sm">
+              <span class="material-symbols-outlined text-secondary text-lg">check_circle</span>Personal Concierge
+            </li>
+            <li class="flex items-center gap-3 text-sm">
+              <span class="material-symbols-outlined text-secondary text-lg">check_circle</span>Unlimited Spa Services
+            </li>
+            <li class="flex items-center gap-3 text-sm">
+              <span class="material-symbols-outlined text-secondary text-lg">check_circle</span>Photography + Merchandise
+            </li>
+          </ul>
+        </div>
+        <button onclick="selectPlan('VIP Pass', 12499)" class="w-full py-4 rounded-full sunset-glow text-white font-bold text-sm">Go Elite</button>
+      </div>
+
+      <!-- Group Offers -->
+      <div class="glass-panel rounded-2xl p-8 flex flex-col justify-between reveal" style="transition-delay:0.3s">
+        <div>
+          <span class="material-symbols-outlined text-primary text-4xl block mb-4">groups</span>
+          <h3 class="font-['Montserrat'] font-bold text-[32px] tracking-tight mt-2">Group Offers</h3>
+          <p class="text-on-surface-variant font-bold uppercase tracking-widest text-xs mt-1 mb-6">Min 10 People</p>
+          <div class="mb-8">
+            <span class="font-['Montserrat'] font-bold text-4xl text-primary">₹1,999</span>
+            <span class="text-on-surface-variant text-sm"> / person</span>
+          </div>
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-center gap-3 text-sm">
+              <span class="material-symbols-outlined text-primary text-lg">check_circle</span>Group Competitions
+            </li>
+            <li class="flex items-center gap-3 text-sm">
+              <span class="material-symbols-outlined text-primary text-lg">check_circle</span>Shared Party Zone
+            </li>
+            <li class="flex items-center gap-3 text-sm">
+              <span class="material-symbols-outlined text-primary text-lg">check_circle</span>Bulk Rental Discount
+            </li>
+            <li class="flex items-center gap-3 text-sm">
+              <span class="material-symbols-outlined text-primary text-lg">check_circle</span>Dedicated Event Host
+            </li>
+            <li class="flex items-center gap-3 text-sm text-outline">
+              <span class="material-symbols-outlined text-outline text-lg">close</span>Spa Access
+            </li>
+          </ul>
+        </div>
+        <button onclick="selectPlan('Group Offer', 1999)" class="w-full py-4 rounded-full border-2 border-primary text-primary font-bold hover:bg-primary hover:text-white transition-all text-sm">Enquire Now</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ COMPARISON TABLE ═══════════════════════ -->
+  <section class="py-[80px] px-4 md:px-16 max-w-[1280px] mx-auto overflow-x-auto reveal">
+    <h2 class="font-['Montserrat'] font-bold text-[clamp(28px,4vw,48px)] tracking-tight text-center mb-16">Compare All Benefits</h2>
+    <div class="glass-panel rounded-3xl p-2 md:p-8 overflow-x-auto">
+      <table class="w-full text-left border-collapse min-w-[600px]">
+        <thead>
+          <tr class="border-b border-outline-variant/30">
+            <th class="py-4 pr-4 font-bold text-xs uppercase tracking-widest text-on-surface-variant w-[35%]">Feature</th>
+            <th class="py-4 px-3 font-bold text-primary text-sm text-center">Basic</th>
+            <th class="py-4 px-3 font-bold text-primary text-sm text-center">Premium</th>
+            <th class="py-4 px-3 font-bold text-secondary text-sm text-center">Elite VIP</th>
+            <th class="py-4 px-3 font-bold text-on-surface text-sm text-center">Group</th>
+          </tr>
+        </thead>
+        <tbody class="text-sm">
+          <tr class="border-b border-outline-variant/20">
+            <td class="py-4 pr-4 font-bold">Fast Track Entry</td>
+            <td class="py-4 px-3 text-center"><span class="material-symbols-outlined text-outline text-lg">close</span></td>
+            <td class="py-4 px-3 text-center"><span class="material-symbols-outlined text-primary text-lg" style="font-variation-settings:'FILL' 1;">check</span></td>
+            <td class="py-4 px-3 text-center"><span class="material-symbols-outlined text-secondary text-lg" style="font-variation-settings:'FILL' 1;">star</span></td>
+            <td class="py-4 px-3 text-center"><span class="material-symbols-outlined text-outline text-lg">close</span></td>
+          </tr>
+          <tr class="border-b border-outline-variant/20">
+            <td class="py-4 pr-4 font-bold">Locker &amp; Towels</td>
+            <td class="py-4 px-3 text-center"><span class="material-symbols-outlined text-primary text-lg" style="font-variation-settings:'FILL' 1;">check</span></td>
+            <td class="py-4 px-3 text-center"><span class="material-symbols-outlined text-primary text-lg" style="font-variation-settings:'FILL' 1;">check</span></td>
+            <td class="py-4 px-3 text-center"><span class="material-symbols-outlined text-secondary text-lg" style="font-variation-settings:'FILL' 1;">star</span></td>
+            <td class="py-4 px-3 text-center"><span class="material-symbols-outlined text-primary text-lg" style="font-variation-settings:'FILL' 1;">check</span></td>
+          </tr>
+          <tr class="border-b border-outline-variant/20">
+            <td class="py-4 pr-4 font-bold">Food &amp; Beverages</td>
+            <td class="py-4 px-3 text-center text-on-surface-variant text-xs">Buffet</td>
+            <td class="py-4 px-3 text-center text-on-surface-variant text-xs">Lunch Buffet</td>
+            <td class="py-4 px-3 text-center text-secondary font-bold text-xs">All Inclusive</td>
+            <td class="py-4 px-3 text-center text-on-surface-variant text-xs">Snack Voucher</td>
+          </tr>
+          <tr class="border-b border-outline-variant/20">
+            <td class="py-4 pr-4 font-bold">Cabana / Suite</td>
+            <td class="py-4 px-3 text-center"><span class="material-symbols-outlined text-outline text-lg">close</span></td>
+            <td class="py-4 px-3 text-center text-xs text-on-surface-variant">2 hrs</td>
+            <td class="py-4 px-3 text-center"><span class="material-symbols-outlined text-secondary text-lg" style="font-variation-settings:'FILL' 1;">star</span></td>
+            <td class="py-4 px-3 text-center"><span class="material-symbols-outlined text-outline text-lg">close</span></td>
+          </tr>
+          <tr class="border-b border-outline-variant/20">
+            <td class="py-4 pr-4 font-bold">Photography</td>
+            <td class="py-4 px-3 text-center"><span class="material-symbols-outlined text-outline text-lg">close</span></td>
+            <td class="py-4 px-3 text-center"><span class="material-symbols-outlined text-primary text-lg" style="font-variation-settings:'FILL' 1;">check</span></td>
+            <td class="py-4 px-3 text-center"><span class="material-symbols-outlined text-secondary text-lg" style="font-variation-settings:'FILL' 1;">star</span></td>
+            <td class="py-4 px-3 text-center"><span class="material-symbols-outlined text-outline text-lg">close</span></td>
+          </tr>
+          <tr class="border-b border-outline-variant/20">
+            <td class="py-4 pr-4 font-bold">Spa Access</td>
+            <td class="py-4 px-3 text-center"><span class="material-symbols-outlined text-outline text-lg">close</span></td>
+            <td class="py-4 px-3 text-center"><span class="material-symbols-outlined text-outline text-lg">close</span></td>
+            <td class="py-4 px-3 text-center"><span class="material-symbols-outlined text-secondary text-lg" style="font-variation-settings:'FILL' 1;">star</span></td>
+            <td class="py-4 px-3 text-center"><span class="material-symbols-outlined text-outline text-lg">close</span></td>
+          </tr>
+          <tr>
+            <td class="py-4 pr-4 font-bold">Concierge</td>
+            <td class="py-4 px-3 text-center"><span class="material-symbols-outlined text-outline text-lg">close</span></td>
+            <td class="py-4 px-3 text-center"><span class="material-symbols-outlined text-outline text-lg">close</span></td>
+            <td class="py-4 px-3 text-center"><span class="material-symbols-outlined text-secondary text-lg" style="font-variation-settings:'FILL' 1;">star</span></td>
+            <td class="py-4 px-3 text-center"><span class="material-symbols-outlined text-primary text-lg" style="font-variation-settings:'FILL' 1;">check</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="text-xs text-on-surface-variant mt-4 flex items-center gap-1"><span class="material-symbols-outlined text-secondary text-base" style="font-variation-settings:'FILL' 1;">star</span> = Premium/Unlimited tier</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ BOOKING WIDGET ═══════════════════════ -->
+  <section class="py-[80px] px-4 md:px-16 bg-surface-container-low relative overflow-hidden">
+    <div class="absolute top-0 left-0 w-full overflow-hidden leading-[0] rotate-180">
+      <svg class="relative block w-full h-16 fill-background" viewBox="0 0 1200 80" preserveAspectRatio="none">
+        <path d="M0,40 C200,80 400,0 600,40 C800,80 1000,0 1200,40 L1200,80 L0,80 Z"/>
+      </svg>
+    </div>
+    <div class="max-w-3xl mx-auto reveal">
+      <div class="text-center mb-12">
+        <h2 class="font-['Montserrat'] font-bold text-[clamp(28px,4vw,40px)] tracking-tight">Complete Your Booking</h2>
+        <p class="text-on-surface-variant mt-3">Select your details below and confirm your visit.</p>
+      </div>
+      <div class="glass-panel rounded-3xl p-6 md:p-10" id="booking-form">
+        <!-- Selected plan display -->
+        <div id="selected-plan-display" class="bg-primary/10 border border-primary/20 rounded-2xl p-4 mb-8 hidden">
+          <div class="flex justify-between items-center">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-widest text-primary">Selected Plan</span>
+              <div class="font-['Montserrat'] font-bold text-2xl mt-1" id="plan-name">VIP Pass</div>
+            </div>
+            <div class="text-right">
+              <div class="font-['Montserrat'] font-bold text-3xl text-primary" id="plan-price">₹12,499</div>
+              <div class="text-xs text-on-surface-variant" id="plan-total">Total: ₹12,499</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Full Name</label>
+            <input type="text" placeholder="Your name" class="w-full px-5 py-4 rounded-2xl bg-white/50 border border-outline-variant focus:border-primary focus:outline-none focus:bg-white transition-all text-on-surface placeholder:text-on-surface-variant/50"/>
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Email Address</label>
+            <input type="email" placeholder="your@email.com" class="w-full px-5 py-4 rounded-2xl bg-white/50 border border-outline-variant focus:border-primary focus:outline-none focus:bg-white transition-all text-on-surface placeholder:text-on-surface-variant/50"/>
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Phone Number</label>
+            <input type="tel" placeholder="+91 98765 43210" class="w-full px-5 py-4 rounded-2xl bg-white/50 border border-outline-variant focus:border-primary focus:outline-none focus:bg-white transition-all text-on-surface placeholder:text-on-surface-variant/50"/>
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Number of Guests</label>
+            <div class="flex items-center gap-4">
+              <button type="button" onclick="changeGuests(-1)" class="w-12 h-12 rounded-full border-2 border-primary text-primary font-bold hover:bg-primary hover:text-white transition-all text-xl">−</button>
+              <span class="font-bold text-xl w-8 text-center" id="guest-count">2</span>
+              <button type="button" onclick="changeGuests(1)" class="w-12 h-12 rounded-full border-2 border-primary text-primary font-bold hover:bg-primary hover:text-white transition-all text-xl">+</button>
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Visit Date</label>
+            <input type="date" class="w-full px-5 py-4 rounded-2xl bg-white/50 border border-outline-variant focus:border-primary focus:outline-none focus:bg-white transition-all text-on-surface"/>
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Package</label>
+            <select id="package-select" onchange="updateFromSelect()" class="w-full px-5 py-4 rounded-2xl bg-white/50 border border-outline-variant focus:border-primary focus:outline-none focus:bg-white transition-all text-on-surface">
+              <option value="1499">Day Pass – ₹1,499</option>
+              <option value="4499">Couple Pass – ₹4,499</option>
+              <option value="8999">Family Package – ₹8,999</option>
+              <option value="12499" selected>VIP Pass – ₹12,499</option>
+              <option value="1999">Group Offer – ₹1,999/person</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3 mb-8 p-4 bg-primary-fixed/30 rounded-2xl">
+          <span class="material-symbols-outlined text-primary">security</span>
+          <p class="text-sm text-on-surface-variant">Secure payment via Razorpay. Your data is encrypted and protected.</p>
+        </div>
+
+        <button onclick="handleBooking()" class="w-full sunset-glow text-white py-5 rounded-full font-bold text-base tracking-wide">Confirm &amp; Proceed to Payment</button>
+        <p class="text-center text-xs text-on-surface-variant mt-4">Free cancellation up to 24 hours before your visit</p>
+      </div>
+
+      <!-- Success message (hidden by default) -->
+      <div id="booking-success" class="glass-panel rounded-3xl p-10 text-center hidden">
+        <span class="material-symbols-outlined text-primary text-6xl block mb-4" style="font-variation-settings:'FILL' 1;">check_circle</span>
+        <h3 class="font-['Montserrat'] font-bold text-3xl mb-4">Booking Confirmed!</h3>
+        <p class="text-on-surface-variant mb-6">A confirmation has been sent to your email. We look forward to welcoming you to AquaVenture!</p>
+        <a href="index.html" class="inline-block border-2 border-primary text-primary px-8 py-4 rounded-full font-bold hover:bg-primary hover:text-white transition-all">Back to Home</a>
+      </div>
+    </div>
+    <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-[0]">
+      <svg class="relative block w-full h-16 fill-background" viewBox="0 0 1200 80" preserveAspectRatio="none">
+        <path d="M0,40 C200,0 400,80 600,40 C800,0 1000,80 1200,40 L1200,80 L0,80 Z"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ FAQ ═══════════════════════ -->
+  <section class="py-[80px] px-4 md:px-16 max-w-[1280px] mx-auto">
+    <div class="text-center mb-16 reveal">
+      <h2 class="font-['Montserrat'] font-bold text-[clamp(28px,4vw,48px)] tracking-tight">Frequently Asked Questions</h2>
+    </div>
+    <div class="max-w-3xl mx-auto space-y-4" id="faq-list">
+      <!-- FAQs injected by JS -->
+    </div>
+  </section>
+</main>
+
+<!-- ═══════════════════════ FOOTER ═══════════════════════ -->
+<footer class="bg-surface-container-highest border-t border-black/5">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 px-4 md:px-16 py-16 max-w-[1280px] mx-auto">
+    <div>
+      <div class="flex items-center gap-2 mb-6">
+        <span class="material-symbols-outlined text-primary text-3xl">waves</span>
+        <span class="font-['Montserrat'] font-bold text-2xl text-primary tracking-tight">AquaVenture</span>
+      </div>
+      <p class="text-on-surface-variant text-sm leading-relaxed">India's leading luxury aquatic resort experience.</p>
+    </div>
+    <div>
+      <h4 class="font-bold text-on-surface mb-6 uppercase tracking-wider text-xs">Pages</h4>
+      <ul class="space-y-3 text-on-surface-variant text-sm">
+        <li><a class="hover:text-primary transition-all" href="index.html">Home</a></li>
+        <li><a class="hover:text-primary transition-all" href="attractions.html">Attractions</a></li>
+        <li><a class="hover:text-primary transition-all" href="pricing.html">Pricing</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="font-bold text-on-surface mb-6 uppercase tracking-wider text-xs">Contact</h4>
+      <ul class="space-y-3 text-on-surface-variant text-sm">
+        <li>📍 Elite Coastline Road, Goa – 403001</li>
+        <li>📞 +91 90000 12345</li>
+        <li>✉️ hello@aquaventure.in</li>
+      </ul>
+    </div>
+  </div>
+  <div class="max-w-[1280px] mx-auto px-4 md:px-16 py-6 border-t border-black/5 flex flex-col md:flex-row justify-between items-center gap-4">
+    <p class="text-on-surface-variant text-sm">© 2025 AquaVenture India.</p>
+    <div class="flex gap-6 text-sm font-bold text-on-surface-variant">
+      <a class="hover:text-primary transition-all" href="#">Terms</a>
+      <a class="hover:text-primary transition-all" href="#">Privacy</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  revealEls.forEach(el => observer.observe(el));
+
+  // Mobile menu
+  document.getElementById('hamburger').addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.toggle('open');
+  });
+
+  // Date selector
+  const dateSelector = document.getElementById('date-selector');
+  const today = new Date();
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() + i);
+    const btn = document.createElement('button');
+    const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const isWeekend = d.getDay() === 0 || d.getDay() === 6;
+    btn.className = `date-btn px-4 py-2 rounded-xl border-2 ${i === 0 ? 'border-primary selected text-white' : 'border-outline-variant text-on-surface'} font-bold text-xs transition-all`;
+    btn.innerHTML = `<div>${days[d.getDay()]}</div><div class="text-base font-extrabold">${d.getDate()}</div><div>${months[d.getMonth()]}</div>${isWeekend ? '<div class="text-[9px] text-secondary mt-0.5">+₹200</div>' : ''}`;
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.date-btn').forEach(b => {
+        b.classList.remove('selected');
+        b.classList.add('border-outline-variant');
+        b.classList.remove('text-white');
+        b.classList.add('text-on-surface');
+      });
+      btn.classList.add('selected');
+      btn.classList.remove('border-outline-variant');
+      btn.classList.add('text-white');
+    });
+    dateSelector.appendChild(btn);
+  }
+
+  // Guest count
+  let guestCount = 2;
+  window.changeGuests = function(delta) {
+    guestCount = Math.max(1, Math.min(20, guestCount + delta));
+    document.getElementById('guest-count').textContent = guestCount;
+    updateTotal();
+  };
+
+  // Plan selection
+  let currentPrice = 12499;
+  let currentPlan = 'VIP Pass';
+  window.selectPlan = function(name, price) {
+    currentPlan = name;
+    currentPrice = price;
+    const display = document.getElementById('selected-plan-display');
+    display.classList.remove('hidden');
+    document.getElementById('plan-name').textContent = name;
+    document.getElementById('plan-price').textContent = '₹' + price.toLocaleString('en-IN');
+    updateTotal();
+    document.getElementById('booking-form').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
+  window.updateFromSelect = function() {
+    const sel = document.getElementById('package-select');
+    const val = parseInt(sel.value);
+    const text = sel.options[sel.selectedIndex].text.split('–')[0].trim();
+    currentPrice = val;
+    currentPlan = text;
+    updateTotal();
+  };
+
+  function updateTotal() {
+    const total = currentPrice * guestCount;
+    const el = document.getElementById('plan-total');
+    if (el) el.textContent = `Total: ₹${total.toLocaleString('en-IN')} (${guestCount} guest${guestCount > 1 ? 's' : ''})`;
+  }
+
+  window.handleBooking = function() {
+    document.getElementById('booking-form').classList.add('hidden');
+    document.getElementById('booking-success').classList.remove('hidden');
+    document.getElementById('booking-success').scrollIntoView({ behavior: 'smooth' });
+  };
+
+  // FAQ
+  const faqs = [
+    { q: "What is the minimum age for the thrill rides?", a: "Thrill rides like the Vortex Slides require guests to be at least 10 years old and meet height requirements of 120cm. Our Junior Cove is designed for children under 10." },
+    { q: "Can I bring outside food and beverages?", a: "Outside food is not permitted inside the park to ensure food safety standards. We offer a wide range of dining options from casual snacks to fine dining, included or discounted in premium plans." },
+    { q: "Is the park accessible for guests with disabilities?", a: "Yes, AquaVenture is designed to be fully accessible. We offer dedicated parking, ramps, accessible restrooms, and selected attractions with accessibility features. Concierge assistance is available." },
+    { q: "What is the cancellation policy?", a: "Bookings can be cancelled free of charge up to 24 hours before your visit for a full refund. Cancellations within 24 hours may incur a 20% fee. VIP passes include flexible rescheduling." },
+    { q: "Are lockers and changing rooms available?", a: "Yes, lockers and premium changing rooms are available for all guests. VIP pass holders receive complimentary premium lockers with charging facilities." }
+  ];
+
+  const faqList = document.getElementById('faq-list');
+  faqs.forEach((faq, i) => {
+    const item = document.createElement('div');
+    item.className = 'faq-item glass-panel rounded-2xl overflow-hidden';
+    item.innerHTML = `
+      <button class="w-full flex justify-between items-center p-6 text-left font-bold text-on-surface hover:text-primary transition-all" onclick="toggleFaq(this)">
+        <span class="pr-4 text-sm md:text-base">${faq.q}</span>
+        <span class="material-symbols-outlined faq-icon text-primary shrink-0">add</span>
+      </button>
+      <div class="faq-content">
+        <p class="px-6 pb-6 text-on-surface-variant text-sm leading-relaxed">${faq.a}</p>
+      </div>`;
+    faqList.appendChild(item);
+  });
+
+  window.toggleFaq = function(btn) {
+    const item = btn.closest('.faq-item');
+    const content = item.querySelector('.faq-content');
+    const isOpen = item.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.faq-item').forEach(el => {
+      el.classList.remove('open');
+      el.querySelector('.faq-content').classList.remove('open');
+    });
+    if (!isOpen) {
+      item.classList.add('open');
+      content.classList.add('open');
+    }
+  };
+</script>
+</body>
+</html>

@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AquaVenture India – Luxury Water Park</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Plus+Jakarta+Sans:wght@400;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48; }
+  .glass-card {
+    background: rgba(255,255,255,0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.4);
+  }
+  .glass-card:hover {
+    background: rgba(255,255,255,0.6);
+    box-shadow: 0 20px 40px rgba(0,103,127,0.1);
+  }
+  .sunset-glow {
+    background: linear-gradient(135deg, #da3717 0%, #b41f00 100%);
+    box-shadow: 0 4px 20px rgba(218,55,23,0.35);
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+  }
+  .sunset-glow:hover { box-shadow: 0 8px 35px rgba(218,55,23,0.55); }
+  .sunset-glow:active { transform: scale(0.97); }
+  .nav-glass {
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-bottom: 1px solid rgba(255,255,255,0.3);
+    box-shadow: 0 8px 32px rgba(0,103,127,0.12);
+  }
+  /* Page transition fade */
+  body { animation: fadeIn 0.4s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  /* Scroll reveal */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  /* Mobile menu */
+  #mobile-menu { display: none; }
+  #mobile-menu.open { display: flex; }
+</style>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#00677f", "on-primary": "#ffffff",
+          "primary-container": "#00d2ff", "on-primary-container": "#00566a",
+          "primary-fixed": "#b6ebff", "primary-fixed-dim": "#47d6ff",
+          "on-primary-fixed": "#001f28", "on-primary-fixed-variant": "#004e60",
+          "secondary": "#b41f00", "on-secondary": "#ffffff",
+          "secondary-container": "#da3717", "on-secondary-container": "#fffbff",
+          "secondary-fixed": "#ffdad3", "secondary-fixed-dim": "#ffb4a4",
+          "on-secondary-fixed": "#3e0500", "on-secondary-fixed-variant": "#8d1600",
+          "tertiary": "#055db6", "on-tertiary": "#ffffff",
+          "tertiary-container": "#a0c2ff", "on-tertiary-container": "#004e9b",
+          "tertiary-fixed": "#d6e3ff", "tertiary-fixed-dim": "#a9c7ff",
+          "on-tertiary-fixed": "#001b3d", "on-tertiary-fixed-variant": "#00468c",
+          "background": "#f4fafe", "on-background": "#161d1f",
+          "surface": "#f4fafe", "on-surface": "#161d1f",
+          "surface-dim": "#d4dbde", "surface-bright": "#f4fafe",
+          "surface-variant": "#dde3e7", "on-surface-variant": "#3c494e",
+          "surface-container-lowest": "#ffffff", "surface-container-low": "#eef5f8",
+          "surface-container": "#e8eff2", "surface-container-high": "#e3e9ed",
+          "surface-container-highest": "#dde3e7",
+          "outline": "#6c797f", "outline-variant": "#bbc9cf",
+          "inverse-surface": "#2b3134", "inverse-on-surface": "#ebf2f5",
+          "inverse-primary": "#47d6ff", "surface-tint": "#00677f",
+          "error": "#ba1a1a", "on-error": "#ffffff",
+          "error-container": "#ffdad6", "on-error-container": "#93000a"
+        },
+        borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+        spacing: {
+          "margin-desktop": "64px", "container-max": "1280px",
+          "margin-mobile": "16px", "unit": "8px", "gutter": "24px", "section-padding": "120px"
+        },
+        fontFamily: {
+          "display-xl": ["Montserrat"], "headline-lg": ["Montserrat"],
+          "headline-md": ["Montserrat"], "body-lg": ["Plus Jakarta Sans"],
+          "body-md": ["Plus Jakarta Sans"], "label-bold": ["Plus Jakarta Sans"]
+        },
+        fontSize: {
+          "display-xl": ["80px", { lineHeight: "1.1", letterSpacing: "-0.04em", fontWeight: "800" }],
+          "headline-lg": ["48px", { lineHeight: "1.2", letterSpacing: "-0.02em", fontWeight: "700" }],
+          "headline-md": ["32px", { lineHeight: "1.3", letterSpacing: "-0.01em", fontWeight: "700" }],
+          "body-lg": ["18px", { lineHeight: "1.6", fontWeight: "400" }],
+          "body-md": ["16px", { lineHeight: "1.6", fontWeight: "400" }],
+          "label-bold": ["14px", { lineHeight: "1.2", fontWeight: "700" }]
+        }
+      }
+    }
+  }
+</script>
+</head>
+<body class="bg-background text-on-background font-['Plus_Jakarta_Sans'] overflow-x-hidden">
+
+<!-- ═══════════════════════ NAVIGATION ═══════════════════════ -->
+<header class="nav-glass fixed top-0 left-0 w-full z-50">
+  <div class="flex justify-between items-center h-20 px-4 md:px-16 max-w-[1280px] mx-auto">
+    <a href="index.html" class="flex items-center gap-3">
+      <span class="material-symbols-outlined text-primary text-3xl">waves</span>
+      <span class="font-['Montserrat'] font-bold text-2xl text-primary tracking-tight">AquaVenture</span>
+    </a>
+    <nav class="hidden md:flex gap-8 items-center">
+      <a href="index.html" class="font-bold text-sm text-primary border-b-2 border-primary pb-0.5 transition-all duration-300 uppercase tracking-wider">Home</a>
+      <a href="attractions.html" class="font-bold text-sm text-on-surface-variant hover:text-secondary transition-all duration-300 uppercase tracking-wider">Attractions</a>
+      <a href="pricing.html" class="font-bold text-sm text-on-surface-variant hover:text-secondary transition-all duration-300 uppercase tracking-wider">Pricing</a>
+      <a href="index.html#gallery" class="font-bold text-sm text-on-surface-variant hover:text-secondary transition-all duration-300 uppercase tracking-wider">Gallery</a>
+    </nav>
+    <a href="pricing.html" class="hidden md:inline-flex sunset-glow text-white px-7 py-3 rounded-full font-bold text-sm">Book Now</a>
+    <!-- Mobile hamburger -->
+    <button id="hamburger" class="md:hidden flex flex-col gap-1.5 p-2" aria-label="Toggle menu">
+      <span class="block w-6 h-0.5 bg-primary transition-all"></span>
+      <span class="block w-6 h-0.5 bg-primary transition-all"></span>
+      <span class="block w-6 h-0.5 bg-primary transition-all"></span>
+    </button>
+  </div>
+  <!-- Mobile Nav -->
+  <div id="mobile-menu" class="flex-col gap-4 px-4 pb-6 nav-glass border-t border-white/20">
+    <a href="index.html" class="font-bold text-sm text-primary uppercase tracking-wider">Home</a>
+    <a href="attractions.html" class="font-bold text-sm text-on-surface-variant uppercase tracking-wider">Attractions</a>
+    <a href="pricing.html" class="font-bold text-sm text-on-surface-variant uppercase tracking-wider">Pricing</a>
+    <a href="pricing.html" class="sunset-glow text-white px-6 py-3 rounded-full font-bold text-sm text-center">Book Now</a>
+  </div>
+</header>
+
+<main>
+  <!-- ═══════════════════════ HERO ═══════════════════════ -->
+  <section class="relative h-screen w-full flex items-center justify-center overflow-hidden">
+    <div class="absolute inset-0 z-0">
+      <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDu1uGxRCdorwv9clLOVjTf_DqjmPw7p1anBUYY4-bAloFPRZxQyiMBIzf-yenTBN6fK2tsZtdpamI5hFjcvmOZ6g-b5JREwpXSamPlM0Ufr82J8EKc49U-dOAbq0IXs_TIo24cBLm-SD6XmyjwfclobEEtByWXMjDmnSSXnohQ3FAIQUGQsoRgzY5sThK4DZqwODp87aBayb4hYf0buH-9zpyv4N8Ph7uVtNgNBaj3nlXfji70fIcXaUethxojt02JGh3yO-amGy0" alt="AquaVenture luxury water park aerial at sunset"/>
+      <div class="absolute inset-0 bg-gradient-to-b from-primary/30 via-transparent to-background/95"></div>
+    </div>
+    <div class="relative z-10 text-center max-w-4xl px-4 reveal">
+      <span class="inline-block text-xs font-bold uppercase tracking-[0.25em] text-primary-fixed bg-primary/80 backdrop-blur-sm px-4 py-1.5 rounded-full mb-6">India's Premier Aquatic Resort</span>
+      <h1 class="font-['Montserrat'] font-extrabold text-[clamp(48px,8vw,80px)] leading-[1.1] tracking-[-0.04em] text-white mb-6 drop-shadow-xl">Dive Into<br/>Unlimited Fun</h1>
+      <p class="font-['Plus_Jakarta_Sans'] text-lg text-white/85 mb-12 max-w-2xl mx-auto leading-relaxed drop-shadow-md">Experience India's most premium aquatic destination. Where elite leisure meets the thrill of the tropics.</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="pricing.html" class="sunset-glow text-white px-10 py-5 rounded-full font-bold text-base inline-block">Get Tickets</a>
+        <a href="attractions.html" class="glass-card text-on-surface px-10 py-5 rounded-full font-bold text-base inline-block border border-white/50 hover:bg-white/60 transition-all active:scale-95">Explore Park</a>
+      </div>
+    </div>
+    <!-- Wave divider -->
+    <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-[0]">
+      <svg class="relative block w-full h-[80px] md:h-[120px] fill-background" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ STATS BAR ═══════════════════════ -->
+  <section class="py-12 px-4 md:px-16">
+    <div class="max-w-[1280px] mx-auto glass-card rounded-3xl px-8 py-8">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+        <div class="reveal">
+          <div class="font-['Montserrat'] font-extrabold text-4xl text-primary">50+</div>
+          <div class="text-sm text-on-surface-variant font-bold mt-1">Attractions</div>
+        </div>
+        <div class="reveal" style="transition-delay:0.1s">
+          <div class="font-['Montserrat'] font-extrabold text-4xl text-primary">5★</div>
+          <div class="text-sm text-on-surface-variant font-bold mt-1">Resort Rating</div>
+        </div>
+        <div class="reveal" style="transition-delay:0.2s">
+          <div class="font-['Montserrat'] font-extrabold text-4xl text-primary">2M+</div>
+          <div class="text-sm text-on-surface-variant font-bold mt-1">Happy Guests</div>
+        </div>
+        <div class="reveal" style="transition-delay:0.3s">
+          <div class="font-['Montserrat'] font-extrabold text-4xl text-primary">365</div>
+          <div class="text-sm text-on-surface-variant font-bold mt-1">Days Open</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ ATTRACTIONS PREVIEW ═══════════════════════ -->
+  <section class="py-[120px] px-4 md:px-16 max-w-[1280px] mx-auto">
+    <div class="text-center mb-20 reveal">
+      <span class="text-secondary font-bold tracking-[0.2em] uppercase text-xs">Elite Experiences</span>
+      <h2 class="font-['Montserrat'] font-bold text-[clamp(32px,4vw,48px)] leading-[1.2] tracking-tight mt-4 text-on-surface">Luxury Attractions</h2>
+      <p class="text-on-surface-variant mt-4 max-w-xl mx-auto">From gravity-defying slides to serene infinity pools — every corner of AquaVenture is designed for wonder.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Card 1 -->
+      <div class="glass-card rounded-3xl p-0 group cursor-pointer overflow-hidden transition-all duration-500 hover:-translate-y-3 reveal">
+        <div class="h-64 overflow-hidden">
+          <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsrxMOOfoYNkAUEJ6dtgSUMyoUyABIC1EsdnQ8y3W1lMgehcRPMLIaXPVBrqZC9cbikP0qLgSjuOgqTYiYxwXf-UghloZj73TtOPJP_Yg3LKU73ZL6oAMHXBDdpLVshLnHYCSF07_PGzGL7dwdV2SAaZ4R1oYPdM11Q51zXVaz-6WssVSpgsc965RQch-w_03K0Xnbz3Rcb83Jrd8l9IXlxACW2KHISlAoQglRlC8Ma0KXSOhqIQP-caE81q0j_6HL8JeFvCOyEM8" alt="Azure Infinity Pool"/>
+        </div>
+        <div class="p-8">
+          <h3 class="font-['Montserrat'] font-bold text-[32px] leading-[1.3] tracking-tight mb-3">Azure Infinity</h3>
+          <p class="text-on-surface-variant text-base leading-relaxed mb-6">Relax in our temperature-controlled infinity pool with panoramic views of the coastal horizon.</p>
+          <a href="attractions.html" class="text-primary font-bold text-sm flex items-center gap-2 hover:gap-4 transition-all">Discover More <span class="material-symbols-outlined text-base">arrow_forward</span></a>
+        </div>
+      </div>
+      <!-- Card 2 -->
+      <div class="glass-card rounded-3xl p-0 group cursor-pointer overflow-hidden transition-all duration-500 hover:-translate-y-3 reveal" style="transition-delay:0.1s">
+        <div class="h-64 overflow-hidden">
+          <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcn_Y-G-EePyqrkrLOAkXhIWUM_Q1GvydWy-DNQJf0CtpWxzfywvOowJBCHV4dc3KRNHBbA3VId540FScSPSnu8o5lmT5zTZbZbfM-oM0AdI5w5kma0PevXIQznrQ83WRWPWTIWqtGxN1omGY5-39rLskVsC5rVx_JfNbvAf5sp5c8XqYgUKegZMz5KAUbghvHu4yMos5mnQsrqvsxH60LkzHfHrFQINMOvk631NAMxrkPnoCAy23YKT63zF_OTTmohuxZ4KuaFEg" alt="Titan Spiral water slide"/>
+        </div>
+        <div class="p-8">
+          <h3 class="font-['Montserrat'] font-bold text-[32px] leading-[1.3] tracking-tight mb-3">Titan Spiral</h3>
+          <p class="text-on-surface-variant text-base leading-relaxed mb-6">An adrenaline-pumping high-speed descent through translucent glass tunnels and vibrant light shows.</p>
+          <a href="attractions.html" class="text-primary font-bold text-sm flex items-center gap-2 hover:gap-4 transition-all">Discover More <span class="material-symbols-outlined text-base">arrow_forward</span></a>
+        </div>
+      </div>
+      <!-- Card 3 -->
+      <div class="glass-card rounded-3xl p-0 group cursor-pointer overflow-hidden transition-all duration-500 hover:-translate-y-3 reveal" style="transition-delay:0.2s">
+        <div class="h-64 overflow-hidden">
+          <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBylZYjMA1-zylwPhdFhmibZ7bnrfo28d1rn3zGpj1f5BRrgeKDLBrqVDpnpIi5C0KwiMfAZGxrI5MeYuY_fQ28zXivXv-UzTPt1R8hqI_xgcYSkHBTSa-UMulA-U36XXkKqR00oOwW9LyoPFEuQ8oJXyI4GGpsQa9d0F3YtYDkZqHuNYBdeBt1s2SjQ2k98UgGLfGN-K0fr0gfW3GdXZ_z2IMeaTquJjtxkSkAaOqkr5MDc6kXprctPugT7R6Bmtqs2EubBcujS_s" alt="Lagoon Retreat cabanas"/>
+        </div>
+        <div class="p-8">
+          <h3 class="font-['Montserrat'] font-bold text-[32px] leading-[1.3] tracking-tight mb-3">Lagoon Retreat</h3>
+          <p class="text-on-surface-variant text-base leading-relaxed mb-6">Private luxury cabanas with dedicated concierge service in a lush, artificial lagoon paradise.</p>
+          <a href="attractions.html" class="text-primary font-bold text-sm flex items-center gap-2 hover:gap-4 transition-all">Discover More <span class="material-symbols-outlined text-base">arrow_forward</span></a>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-12 reveal">
+      <a href="attractions.html" class="inline-flex items-center gap-2 border-2 border-primary text-primary px-8 py-4 rounded-full font-bold hover:bg-primary hover:text-white transition-all">View All Attractions <span class="material-symbols-outlined">arrow_forward</span></a>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ PRICING PREVIEW ═══════════════════════ -->
+  <section class="py-[120px] bg-surface-container-low relative overflow-hidden">
+    <!-- Decorative wave top -->
+    <div class="absolute top-0 left-0 w-full overflow-hidden leading-[0] rotate-180">
+      <svg class="relative block w-full h-16 fill-background" viewBox="0 0 1200 80" preserveAspectRatio="none">
+        <path d="M0,40 C200,80 400,0 600,40 C800,80 1000,0 1200,40 L1200,80 L0,80 Z"/>
+      </svg>
+    </div>
+    <div class="max-w-[1280px] mx-auto px-4 md:px-16">
+      <div class="text-center mb-16 reveal">
+        <h2 class="font-['Montserrat'] font-bold text-[clamp(32px,4vw,48px)] tracking-tight">Choose Your Experience</h2>
+        <p class="text-on-surface-variant mt-4">Transparent pricing for an unparalleled day of luxury.</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Day Pass -->
+        <div class="glass-card p-8 rounded-3xl flex flex-col items-center text-center reveal">
+          <span class="material-symbols-outlined text-primary text-4xl mb-4">wb_sunny</span>
+          <span class="font-bold text-on-surface-variant mb-4 uppercase tracking-widest text-xs">Day Pass</span>
+          <div class="mb-6"><span class="font-['Montserrat'] font-bold text-4xl text-on-surface">₹1,499</span></div>
+          <ul class="space-y-3 mb-10 text-on-surface-variant text-sm flex-1 w-full text-left">
+            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-lg">check_circle</span>All Water Rides</li>
+            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-lg">check_circle</span>Locker Facility</li>
+            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-lg">check_circle</span>Standard Buffet</li>
+          </ul>
+          <a href="pricing.html" class="w-full py-4 rounded-full border-2 border-primary text-primary font-bold hover:bg-primary hover:text-white transition-all text-center block text-sm">Select</a>
+        </div>
+        <!-- Family -->
+        <div class="glass-card p-8 rounded-3xl flex flex-col items-center text-center reveal" style="transition-delay:0.1s">
+          <span class="material-symbols-outlined text-primary text-4xl mb-4">family_restroom</span>
+          <span class="font-bold text-on-surface-variant mb-4 uppercase tracking-widest text-xs">Family Pack</span>
+          <div class="mb-2"><span class="font-['Montserrat'] font-bold text-4xl text-on-surface">₹4,999</span></div>
+          <p class="text-xs text-on-surface-variant mb-6">Up to 4 Members</p>
+          <ul class="space-y-3 mb-10 text-on-surface-variant text-sm flex-1 w-full text-left">
+            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-lg">check_circle</span>Priority Entry</li>
+            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-lg">check_circle</span>Kids Zone Access</li>
+            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-lg">check_circle</span>Family Meal Kit</li>
+          </ul>
+          <a href="pricing.html" class="w-full py-4 rounded-full border-2 border-primary text-primary font-bold hover:bg-primary hover:text-white transition-all text-center block text-sm">Select</a>
+        </div>
+        <!-- VIP (highlighted) -->
+        <div class="bg-primary text-on-primary p-8 rounded-3xl flex flex-col items-center text-center scale-105 shadow-2xl relative overflow-hidden reveal" style="transition-delay:0.2s">
+          <div class="absolute top-4 right-[-35px] bg-secondary-container text-on-secondary px-10 py-1 rotate-45 text-[10px] font-bold uppercase tracking-widest">Premium</div>
+          <span class="material-symbols-outlined text-primary-fixed text-4xl mb-4" style="font-variation-settings:'FILL' 1;">workspace_premium</span>
+          <span class="font-bold text-primary-fixed mb-4 uppercase tracking-widest text-xs">VIP Pass</span>
+          <div class="mb-6"><span class="font-['Montserrat'] font-bold text-4xl">₹3,499</span></div>
+          <ul class="space-y-3 mb-10 text-primary-fixed text-sm flex-1 w-full text-left">
+            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary-fixed text-lg">star</span>Fast-Track Entry</li>
+            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary-fixed text-lg">check_circle</span>Private Cabana</li>
+            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary-fixed text-lg">check_circle</span>Premium Lunch Buffet</li>
+            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary-fixed text-lg">check_circle</span>Photos &amp; Merchandise</li>
+          </ul>
+          <a href="pricing.html" class="w-full py-4 rounded-full sunset-glow text-white font-bold transition-all text-center block text-sm">Go Elite</a>
+        </div>
+        <!-- Season -->
+        <div class="glass-card p-8 rounded-3xl flex flex-col items-center text-center reveal" style="transition-delay:0.3s">
+          <span class="material-symbols-outlined text-primary text-4xl mb-4">card_membership</span>
+          <span class="font-bold text-on-surface-variant mb-4 uppercase tracking-widest text-xs">Season Pass</span>
+          <div class="mb-2"><span class="font-['Montserrat'] font-bold text-4xl text-on-surface">₹9,999</span></div>
+          <p class="text-xs text-on-surface-variant mb-6">Unlimited Yearly Access</p>
+          <ul class="space-y-3 mb-10 text-on-surface-variant text-sm flex-1 w-full text-left">
+            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-lg">check_circle</span>Member Only Events</li>
+            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-lg">check_circle</span>20% Food Discounts</li>
+            <li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-lg">check_circle</span>Bring a Friend Free</li>
+          </ul>
+          <a href="pricing.html" class="w-full py-4 rounded-full border-2 border-primary text-primary font-bold hover:bg-primary hover:text-white transition-all text-center block text-sm">Join Club</a>
+        </div>
+      </div>
+    </div>
+    <!-- Wave bottom -->
+    <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-[0]">
+      <svg class="relative block w-full h-16 fill-background" viewBox="0 0 1200 80" preserveAspectRatio="none">
+        <path d="M0,40 C200,0 400,80 600,40 C800,0 1000,80 1200,40 L1200,80 L0,80 Z"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ GALLERY ═══════════════════════ -->
+  <section id="gallery" class="py-[120px] px-4 md:px-16 max-w-[1280px] mx-auto">
+    <div class="flex flex-col md:flex-row justify-between items-end mb-12 reveal">
+      <div>
+        <span class="text-secondary font-bold tracking-[0.2em] uppercase text-xs">The Visual Experience</span>
+        <h2 class="font-['Montserrat'] font-bold text-[clamp(32px,4vw,48px)] tracking-tight mt-4">Memories in Motion</h2>
+      </div>
+      <a class="text-primary font-bold text-sm flex items-center gap-2 hover:gap-4 transition-all mt-4 md:mt-0" href="#">View Full Gallery <span class="material-symbols-outlined">arrow_forward</span></a>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:auto-rows-[200px]">
+      <div class="md:row-span-2 overflow-hidden rounded-3xl reveal">
+        <img class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1aYcxaYK4NDZuOFXZBFUE9OSTgiAkOv3F9w19ggkGlBPf6-CUemElyxpqeKbIpSUJSZ2D-DQFbKSKGmHo7MXeghrJnHOghXQ6Io4wL6s0-PkcuszeNnnFT7XrbMK1xxr2Ock09vfDRoOSr0MFMLrkXytF_ODHPco4i8zQgHyhO57yk_--kVXqV1zaJaII_0IoQ3xYf_ZoBMuz5WSbCOJ4zbF0LOoue8WFFe30-7P4x83Yz_-uaruc5zrpZC7uw9l4hrxwk3E_JW0" alt="Family fun at AquaVenture"/>
+      </div>
+      <div class="md:col-span-2 overflow-hidden rounded-3xl reveal" style="transition-delay:0.1s">
+        <img class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCQNWN2JJIaNquOCXsh3-RdJGKj_0kMpTNyXOoYswRweAUYr9suzbaK1ehm6qzPEeAcQA36BsoMTNOF-hx5-k6Ggeydi9P_llskl8jkRtO4UmbquQUopjU_Ux12RiU_4L2CcwbzWctNs4NjWLTcZ6zMKhuvukNMq8jCp_JpuXnxykBxqcasX-Ua-QNXlG1SqXwZ5Mrv121w_i1-XPLDaSOEMk0hpmEtE6LuiSk5hxiBdvhPBIzhd4llsWC6fHGWti49qLaR_SUbJI" alt="Aerial lazy river view"/>
+      </div>
+      <div class="md:row-span-3 overflow-hidden rounded-3xl reveal" style="transition-delay:0.2s">
+        <img class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCI5fZQ6i5AHJen3nspqlJGZ4IT5cZfz_1NgciJT_VNlJxa-njjk7MmTkOX8od6tLLVQDmpED9kRlpjgctTAr2GsK3BIRC9IbMzFwtin9XPNZMG2kwf0X3Na080pE7rIfmNxk7xtXqzZFWRknGF9gQWDaNywvqDrT2xGE3ySrBJDBY98N5Asg_2ZXVDm0rqMoZ0pwpp5QP5JGYBrC2HFnTy6sSEPbebVJaAnSDdYasn3rW11EwWF3c1r8uHnPmCZZMjd56PibupIyw" alt="Premium resort dining"/>
+      </div>
+      <div class="md:col-span-2 md:row-span-2 overflow-hidden rounded-3xl reveal" style="transition-delay:0.1s">
+        <img class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvpjx-eBuVcAjcH1FLAh1Q4jAtucRdgVVSZQd6DS2e9RqEAJ5wmhnFWfKKlEcaZTFGtWMWZ5jii8F8zAjlDVqarg7eR5nJmW8LS7C3m0p91OkHFBt2rqhCJjsN_CtRTsXXf4VESnUY1aw_sVkLe_qe_72-Tq-vzTAVnpjIucWVUf0dWhkqaX9wGa11P3Hpagp2-xZbHDEMPHj1_y77Ynk74mfJoi2qLdMce68fCbm5ha53zCF0we1qg7hkDm1SDaFJJq0xqKZJ0gY" alt="Outdoor spa pools"/>
+      </div>
+      <div class="overflow-hidden rounded-3xl reveal" style="transition-delay:0.3s">
+        <img class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJ_FLk233IIqI-V0aMZ9S1BmClqrXuBLbaUgW6qvbraMcOvzv_L4Hc4UN5vd6rEcFr68To0TJ0YmLDdncfbxxRrZikNMchEDLclgbiYO9WpWIKYTrcFEB2s71ZklsZsufQMCotxQo4FwM5-3D_I4uSTIPMJf2AjoWkGEBf45YetoB_KpBP9kynpCr85elyoLm2X8ggHL_ubH_PlH4Io6jrzUi7eHOxk62wmPJCrJHJdxvH8z3S0SwiaHj2wBlUEl-goUBweCco-dc" alt="Pool bar cocktails"/>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ NEWSLETTER CTA ═══════════════════════ -->
+  <section class="py-[120px] bg-gradient-to-tr from-primary to-primary-container text-on-primary relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+      <svg viewBox="0 0 1200 600" class="w-full h-full">
+        <circle cx="200" cy="100" r="300" fill="white" opacity="0.3"/>
+        <circle cx="1000" cy="500" r="250" fill="white" opacity="0.2"/>
+      </svg>
+    </div>
+    <div class="max-w-4xl mx-auto text-center px-4 relative z-10 reveal">
+      <h2 class="font-['Montserrat'] font-bold text-[clamp(32px,5vw,56px)] tracking-tight mb-6">Stay In The Loop</h2>
+      <p class="text-lg opacity-90 mb-10 max-w-xl mx-auto">Exclusive offers, event invites, and seasonal membership discounts delivered to your inbox.</p>
+      <div class="flex flex-col sm:flex-row gap-4 max-w-2xl mx-auto">
+        <input class="flex-grow px-8 py-5 rounded-full bg-white/20 border border-white/40 text-white placeholder:text-white/60 focus:outline-none focus:bg-white/30 transition-all font-['Plus_Jakarta_Sans']" placeholder="Your email address" type="email"/>
+        <button class="sunset-glow text-white px-10 py-5 rounded-full font-bold shrink-0">Subscribe</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ═══════════════════════ FOOTER ═══════════════════════ -->
+<footer class="bg-surface-container-highest border-t border-black/5 w-full">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-4 md:px-16 py-16 max-w-[1280px] mx-auto">
+    <div>
+      <div class="flex items-center gap-2 mb-6">
+        <span class="material-symbols-outlined text-primary text-3xl">waves</span>
+        <span class="font-['Montserrat'] font-bold text-2xl text-primary tracking-tight">AquaVenture</span>
+      </div>
+      <p class="text-on-surface-variant text-sm leading-relaxed mb-6">India's leading name in luxury aquatic entertainment and premium resort experiences.</p>
+      <div class="flex gap-3">
+        <a class="w-10 h-10 rounded-full glass-card flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all" href="#"><span class="material-symbols-outlined text-lg">public</span></a>
+        <a class="w-10 h-10 rounded-full glass-card flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all" href="#"><span class="material-symbols-outlined text-lg">alternate_email</span></a>
+        <a class="w-10 h-10 rounded-full glass-card flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all" href="#"><span class="material-symbols-outlined text-lg">photo_camera</span></a>
+      </div>
+    </div>
+    <div>
+      <h4 class="font-bold text-on-surface mb-6 uppercase tracking-wider text-xs">Quick Links</h4>
+      <ul class="space-y-3 text-on-surface-variant text-sm">
+        <li><a class="hover:text-primary transition-all" href="attractions.html">Attractions</a></li>
+        <li><a class="hover:text-primary transition-all" href="#">Plan Your Visit</a></li>
+        <li><a class="hover:text-primary transition-all" href="pricing.html">Memberships</a></li>
+        <li><a class="hover:text-primary transition-all" href="#">Safety Protocol</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="font-bold text-on-surface mb-6 uppercase tracking-wider text-xs">Support</h4>
+      <ul class="space-y-3 text-on-surface-variant text-sm">
+        <li><a class="hover:text-primary transition-all" href="#">Help Center</a></li>
+        <li><a class="hover:text-primary transition-all" href="#">Contact Us</a></li>
+        <li><a class="hover:text-primary transition-all" href="#">Privacy Policy</a></li>
+        <li><a class="hover:text-primary transition-all" href="#">WhatsApp Booking</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="font-bold text-on-surface mb-6 uppercase tracking-wider text-xs">Location</h4>
+      <p class="text-on-surface-variant text-sm mb-4">Elite Coastline Road, Sector 45<br/>Goa, India – 403001</p>
+      <div class="w-full h-32 rounded-2xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-500">
+        <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDi0XqugZnYp-m_x7c0ZrPW1N_6szV13hwOOU6aCExOgzkmSOzUgZY4MEy7ycuk3-XMNMWAI95UgIoAxEcgLr_QNtg0EMmirhi21ED7NnCuIoAzX9tJoU_i9OSx9AW5LGzs38nptrV6W33PIXSqy_6NoCn9jCt0T1-CqzRyiWwzYdPP2csu0d4-czZP3CQ9JohqnCm-BVpidIpBIWakHXdTNqPZEHw_A_rlIWMw0KkjY5FcLMGad3ixygO4a5QO-0np2cQbpdYIrxA" alt="Map location Goa"/>
+      </div>
+    </div>
+  </div>
+  <div class="max-w-[1280px] mx-auto px-4 md:px-16 py-6 border-t border-black/5 flex flex-col md:flex-row justify-between items-center gap-4">
+    <p class="text-on-surface-variant text-sm">© 2025 AquaVenture India. Premium Resort Experience.</p>
+    <div class="flex gap-6 text-sm font-bold text-on-surface-variant">
+      <a class="hover:text-primary transition-all" href="#">Terms of Service</a>
+      <a class="hover:text-primary transition-all" href="#">Cookie Policy</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.1 });
+  revealEls.forEach(el => observer.observe(el));
+
+  // Mobile menu
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  hamburger.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+</script>
+</body>
+</html>

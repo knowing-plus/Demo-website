@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Attractions – AquaVenture India</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Plus+Jakarta+Sans:wght@400;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48; }
+  .glass-card {
+    background: rgba(255,255,255,0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.4);
+    transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+  }
+  .glass-card:hover {
+    background: rgba(255,255,255,0.6);
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0,103,127,0.12);
+  }
+  .sunset-glow {
+    background: linear-gradient(135deg, #da3717 0%, #b41f00 100%);
+    box-shadow: 0 4px 20px rgba(218,55,23,0.35);
+    transition: box-shadow 0.3s, transform 0.2s;
+  }
+  .sunset-glow:hover { box-shadow: 0 8px 35px rgba(218,55,23,0.55); transform: scale(1.02); }
+  .sunset-glow:active { transform: scale(0.97); }
+  .nav-glass {
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-bottom: 1px solid rgba(255,255,255,0.3);
+    box-shadow: 0 8px 32px rgba(0,103,127,0.12);
+  }
+  body { animation: fadeIn 0.4s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  #mobile-menu { display: none; }
+  #mobile-menu.open { display: flex; }
+  /* Filter tabs */
+  .filter-btn { transition: all 0.2s; }
+  .filter-btn.active { background: #00677f; color: white; }
+</style>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#00677f", "on-primary": "#ffffff",
+          "primary-container": "#00d2ff", "on-primary-container": "#00566a",
+          "primary-fixed": "#b6ebff", "primary-fixed-dim": "#47d6ff",
+          "on-primary-fixed": "#001f28",
+          "secondary": "#b41f00", "on-secondary": "#ffffff",
+          "secondary-container": "#da3717", "on-secondary-container": "#fffbff",
+          "secondary-fixed": "#ffdad3", "on-secondary-fixed": "#3e0500",
+          "tertiary": "#055db6", "on-tertiary": "#ffffff",
+          "tertiary-container": "#a0c2ff",
+          "background": "#f4fafe", "on-background": "#161d1f",
+          "surface": "#f4fafe", "on-surface": "#161d1f",
+          "surface-variant": "#dde3e7", "on-surface-variant": "#3c494e",
+          "surface-container-low": "#eef5f8", "surface-container": "#e8eff2",
+          "surface-container-high": "#e3e9ed", "surface-container-highest": "#dde3e7",
+          "outline": "#6c797f", "outline-variant": "#bbc9cf",
+          "inverse-surface": "#2b3134"
+        },
+        fontFamily: {
+          "display-xl": ["Montserrat"], "headline-lg": ["Montserrat"],
+          "headline-md": ["Montserrat"], "body-md": ["Plus Jakarta Sans"]
+        }
+      }
+    }
+  }
+</script>
+</head>
+<body class="bg-background text-on-background font-['Plus_Jakarta_Sans'] overflow-x-hidden">
+
+<!-- ═══════════════════════ NAVIGATION ═══════════════════════ -->
+<header class="nav-glass fixed top-0 left-0 w-full z-50">
+  <div class="flex justify-between items-center h-20 px-4 md:px-16 max-w-[1280px] mx-auto">
+    <a href="index.html" class="flex items-center gap-3">
+      <span class="material-symbols-outlined text-primary text-3xl">waves</span>
+      <span class="font-['Montserrat'] font-bold text-2xl text-primary tracking-tight">AquaVenture</span>
+    </a>
+    <nav class="hidden md:flex gap-8 items-center">
+      <a href="index.html" class="font-bold text-sm text-on-surface-variant hover:text-secondary transition-all uppercase tracking-wider">Home</a>
+      <a href="attractions.html" class="font-bold text-sm text-primary border-b-2 border-primary pb-0.5 transition-all uppercase tracking-wider">Attractions</a>
+      <a href="pricing.html" class="font-bold text-sm text-on-surface-variant hover:text-secondary transition-all uppercase tracking-wider">Pricing</a>
+      <a href="index.html#gallery" class="font-bold text-sm text-on-surface-variant hover:text-secondary transition-all uppercase tracking-wider">Gallery</a>
+    </nav>
+    <a href="pricing.html" class="hidden md:inline-flex sunset-glow text-white px-7 py-3 rounded-full font-bold text-sm">Book Now</a>
+    <button id="hamburger" class="md:hidden flex flex-col gap-1.5 p-2" aria-label="Toggle menu">
+      <span class="block w-6 h-0.5 bg-primary"></span>
+      <span class="block w-6 h-0.5 bg-primary"></span>
+      <span class="block w-6 h-0.5 bg-primary"></span>
+    </button>
+  </div>
+  <div id="mobile-menu" class="flex-col gap-4 px-4 pb-6 nav-glass border-t border-white/20">
+    <a href="index.html" class="font-bold text-sm text-on-surface-variant uppercase tracking-wider">Home</a>
+    <a href="attractions.html" class="font-bold text-sm text-primary uppercase tracking-wider">Attractions</a>
+    <a href="pricing.html" class="font-bold text-sm text-on-surface-variant uppercase tracking-wider">Pricing</a>
+    <a href="pricing.html" class="sunset-glow text-white px-6 py-3 rounded-full font-bold text-sm text-center">Book Now</a>
+  </div>
+</header>
+
+<main class="pt-20">
+  <!-- ═══════════════════════ HERO ═══════════════════════ -->
+  <section class="relative h-[614px] flex items-center justify-center overflow-hidden">
+    <div class="absolute inset-0 z-0">
+      <img class="w-full h-full object-cover brightness-75" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUA6jtn0TGB_2LPLi1YJftcvFDw1DQEP23Cpin_iqCUlPqDsxYhl4swrV5xKnles4QZQlLySZg3wzYLp1rO3m2aqstSDLZfIpMv0C1xR9gXcSf2BBu82Czzqhr6N6blzTJ9Ru7TyWaUCy8MuomttNX7_iIru41SnFHrDhCng95Menv2eCwitgEYzO06D-04AsZHGW5JKxBuNkN5IMJsaxNKUEAqGgbmITmMYtvFralqP6iSipU7SI1TnZvOAW_uc-V3s3uU6BbX1s" alt="AquaVenture World-Class Thrills"/>
+      <div class="absolute inset-0 bg-gradient-to-b from-transparent to-background"></div>
+    </div>
+    <div class="relative z-10 text-center px-4 reveal">
+      <span class="inline-block text-xs font-bold uppercase tracking-[0.25em] text-white/80 border border-white/30 backdrop-blur-sm px-4 py-1.5 rounded-full mb-6">Elite Collection</span>
+      <h1 class="font-['Montserrat'] font-extrabold text-[clamp(48px,8vw,80px)] leading-[1.1] tracking-tight text-white mb-4 drop-shadow-lg">World-Class Thrills</h1>
+      <p class="font-['Plus_Jakarta_Sans'] text-lg text-white/90 max-w-2xl mx-auto drop-shadow-md">Experience the pinnacle of aquatic leisure with our premium selection of award-winning attractions and serene resort amenities.</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ FILTER TABS ═══════════════════════ -->
+  <section class="py-8 px-4 md:px-16 max-w-[1280px] mx-auto">
+    <div class="flex flex-wrap gap-3 justify-center">
+      <button class="filter-btn active px-6 py-2 rounded-full border-2 border-primary text-sm font-bold" data-filter="all">All Attractions</button>
+      <button class="filter-btn px-6 py-2 rounded-full border-2 border-outline-variant text-sm font-bold text-on-surface-variant" data-filter="thrill">Thrill Rides</button>
+      <button class="filter-btn px-6 py-2 rounded-full border-2 border-outline-variant text-sm font-bold text-on-surface-variant" data-filter="relax">Relaxation</button>
+      <button class="filter-btn px-6 py-2 rounded-full border-2 border-outline-variant text-sm font-bold text-on-surface-variant" data-filter="family">Family</button>
+      <button class="filter-btn px-6 py-2 rounded-full border-2 border-outline-variant text-sm font-bold text-on-surface-variant" data-filter="dining">Dining &amp; Bar</button>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ BENTO ATTRACTIONS GRID ═══════════════════════ -->
+  <section class="px-4 md:px-16 max-w-[1280px] mx-auto pb-[120px]">
+    <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6 reveal">
+      <div>
+        <span class="inline-block px-4 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed font-bold text-xs uppercase tracking-widest mb-4">Premier Attractions</span>
+        <h2 class="font-['Montserrat'] font-bold text-[clamp(32px,4vw,48px)] tracking-tight text-on-surface">50+ Unique Experiences</h2>
+      </div>
+      <p class="font-['Plus_Jakarta_Sans'] text-on-surface-variant max-w-md text-sm leading-relaxed">Each experience is designed for maximum exhilaration while maintaining our standards of luxury and safety.</p>
+    </div>
+
+    <!-- Bento Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+      <!-- Featured: Wave Pool -->
+      <div class="attr-card group lg:col-span-2 lg:row-span-2 relative overflow-hidden rounded-3xl glass-card h-[400px] lg:h-auto" data-category="relax">
+        <img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVnT2KlUndWvOp2HP6TT_vlKLBVZHJhEzG2rSc-L5REB4WVXZdbWTqrFvY50lnvO6Xd_896vl6qHPFdZKos88RAiJwNkz3SHKiNa7unqwskAzKxMHRoIMGorsAa1pBkM7dnz06rOmAz74_YhK38jtQ6Bf-y8LXeSdGH7Bao9b0RUqiheVrDXWxK4Z9VSoBsN9HOQ8v9sdrcG6TiAh0URS_dz8TfkOPq_nX5Rr7ruPrK_c7W5L0OPHLRb1PjGeMPTyjm7QUgqboNz0" alt="Azure Wave Pool"/>
+        <div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent opacity-70"></div>
+        <div class="absolute bottom-0 left-0 p-8 w-full">
+          <div class="bg-primary/25 backdrop-blur-md p-6 rounded-2xl border border-white/20">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="bg-primary-fixed text-on-primary-fixed text-xs font-bold px-3 py-0.5 rounded-full uppercase tracking-wider">Flagship</span>
+            </div>
+            <h3 class="font-['Montserrat'] font-bold text-[32px] text-white mb-2 leading-tight">Azure Wave Pool</h3>
+            <p class="text-white/80 text-sm leading-relaxed group-hover:block hidden">India's largest climate-controlled wave pool featuring six distinct wave patterns ranging from gentle tropical ripples to exhilarating surf-grade swells.</p>
+            <p class="text-white/80 text-sm leading-relaxed group-hover:hidden block">India's largest climate-controlled wave pool with six distinct wave patterns.</p>
+            <div class="mt-4 flex items-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+              <span class="material-symbols-outlined text-white text-lg">pool</span>
+              <span class="font-bold text-white uppercase tracking-wider text-xs">Family Friendly</span>
+              <span class="material-symbols-outlined text-white text-lg ml-2">accessible</span>
+              <span class="font-bold text-white uppercase tracking-wider text-xs">Accessible</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vortex Slides -->
+      <div class="attr-card group relative overflow-hidden rounded-3xl glass-card h-[280px]" data-category="thrill">
+        <img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEvslM0Ln5qNdXKu_VpNvNo_dGvitVRctlO8fU3Se9Gww1G73eZ9weBjiJSEvZcfbNjAxjMi8FBDDoJF8Vhrmqc6vlXG1V4I22myXC1EQdk3mAKBpSlz1Z4f_MkTtYqkARI5tHkwjF-lgHJLZq7xrx5jnOtkaHrLaEyguZ9QI_05SreIqsRMYQTGVHW1N4iLwRVaCmKmz9iTffdFrbm68DKFf2XgR9QBDCQmqOkcn743WVt6XcgKH_2D360HezvMNQin6_wA_qwQo" alt="Vortex Slides"/>
+        <div class="absolute inset-0 bg-gradient-to-t from-secondary/80 via-transparent to-transparent opacity-70"></div>
+        <div class="absolute top-4 left-4">
+          <span class="bg-secondary text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Extreme</span>
+        </div>
+        <div class="absolute bottom-0 left-0 p-6 w-full">
+          <h3 class="font-bold text-lg text-white mb-1">Vortex Slides</h3>
+          <p class="text-xs text-white/90 opacity-0 group-hover:opacity-100 transition-all duration-300">Gravity-defying drops and high-velocity 360° turns through translucent tunnels.</p>
+        </div>
+      </div>
+
+      <!-- Monsoon Disco -->
+      <div class="attr-card group relative overflow-hidden rounded-3xl glass-card h-[280px]" data-category="family">
+        <img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9Vrr0kTqUf-0MPqzPY0P6GWMVpNl3-2ZqszVBs_WncQyv9zJkmsZUsGU5k3CsV8wKFgwT6aPoswhqphhhLAKi449-INqv4jZx-4pXwSRjpr_TQwgxzMrLptKAhtOcb1CECHjKRbNb-hcrCnMY-foRHala45toGoEHsQpo0fbzcXaHaKHIp0laGE5np5NBPBHIYUrtOboqoms83wcOARtkcx9ZD98PddYFf8RP49Ji9S2M99MeeH-PMvYfa-k5fblkREaRd_RQ-x8" alt="Monsoon Disco"/>
+        <div class="absolute inset-0 bg-gradient-to-t from-tertiary/80 via-transparent to-transparent opacity-70"></div>
+        <div class="absolute top-4 left-4">
+          <span class="bg-tertiary text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Live</span>
+        </div>
+        <div class="absolute bottom-0 left-0 p-6 w-full">
+          <h3 class="font-bold text-lg text-white mb-1">Monsoon Disco</h3>
+          <p class="text-xs text-white/90 opacity-0 group-hover:opacity-100 transition-all duration-300">Pulsating beats under synchronized rhythmic rainfall and neon light shows.</p>
+        </div>
+      </div>
+
+      <!-- Serene Stream -->
+      <div class="attr-card group relative overflow-hidden rounded-3xl glass-card h-[280px]" data-category="relax">
+        <img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0qZUJHkQp0R1Y2tFzWjTYzBygVCXzkQO2d1CvyYoPmIqkxm50SVgUobNvO70vKpcE_pCMvvZuBmU2SdhAiWl_TkvzPqEp4SOuaq1uKqgxjO1KvBtQjXiLkIs18SsVKeo79LuLfko0nsLMAfBcWKE2-RILFEwPFu21IeRfJeUO9r0SynaPeonoCl8LhHnxQpBhZEwA1F4DCfGvqyXDHG6ilVVH8WsIwyhwlc5qV8hAzwNE14gEI6etxI0sC448dxBPMLdUG2-Ujdc" alt="Serene Stream lazy river"/>
+        <div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent opacity-70"></div>
+        <div class="absolute bottom-0 left-0 p-6 w-full">
+          <h3 class="font-bold text-lg text-white mb-1">Serene Stream</h3>
+          <p class="text-xs text-white/90 opacity-0 group-hover:opacity-100 transition-all duration-300">Drift along our botanical lazy river lined with exotic tropical plants.</p>
+        </div>
+      </div>
+
+      <!-- Junior Cove -->
+      <div class="attr-card group relative overflow-hidden rounded-3xl glass-card h-[280px]" data-category="family">
+        <img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCkqKig3d_GVlVV_xoKpjKma_LB42duKZG_j_N2vOQEAkyeLU7788LnH4NhUteGtCGtZavhhZzP_yWrjnfDzCP_oFlFKMPLAxiKAciBEp94mYs4hZZugQOsUtFxlmki_vrnXe15kvcQmshUz_NRsXkv9lZG_Br0vt3GUJ2Y0J_UzlCYZYMnK4ABvfym1Y6NMWyVpaQG5jY_Ck4obP4ZD1kEwHdcMAk58rUKR6RuGT39o9gb4hXA_xjD6NcucwWTNJVpv-KNNWJlv0" alt="Junior Cove kids zone"/>
+        <div class="absolute inset-0 bg-gradient-to-t from-primary-container/80 via-transparent to-transparent opacity-70"></div>
+        <div class="absolute top-4 left-4">
+          <span class="bg-primary text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Kids Zone</span>
+        </div>
+        <div class="absolute bottom-0 left-0 p-6 w-full">
+          <h3 class="font-bold text-lg text-white mb-1">Junior Cove</h3>
+          <p class="text-xs text-white/90 opacity-0 group-hover:opacity-100 transition-all duration-300">A safe, colorful water playground with gentle slides and interactive splash zones.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Second Row -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Infinity Pool -->
+      <div class="attr-card group relative overflow-hidden rounded-3xl glass-card h-[300px]" data-category="relax">
+        <img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsrxMOOfoYNkAUEJ6dtgSUMyoUyABIC1EsdnQ8y3W1lMgehcRPMLIaXPVBrqZC9cbikP0qLgSjuOgqTYiYxwXf-UghloZj73TtOPJP_Yg3LKU73ZL6oAMHXBDdpLVshLnHYCSF07_PGzGL7dwdV2SAaZ4R1oYPdM11Q51zXVaz-6WssVSpgsc965RQch-w_03K0Xnbz3Rcb83Jrd8l9IXlxACW2KHISlAoQglRlC8Ma0KXSOhqIQP-caE81q0j_6HL8JeFvCOyEM8" alt="Azure Infinity Pool"/>
+        <div class="absolute inset-0 bg-gradient-to-t from-primary/70 via-transparent to-transparent opacity-60"></div>
+        <div class="absolute top-4 left-4">
+          <span class="bg-white/20 backdrop-blur-sm text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-white/30">VIP Exclusive</span>
+        </div>
+        <div class="absolute bottom-0 left-0 p-8 w-full">
+          <h3 class="font-['Montserrat'] font-bold text-2xl text-white mb-2">Azure Infinity Pool</h3>
+          <p class="text-sm text-white/85 opacity-0 group-hover:opacity-100 transition-all duration-300">Temperature-controlled infinity pool with panoramic coastal horizon views.</p>
+        </div>
+      </div>
+
+      <!-- Lagoon Retreat cabanas -->
+      <div class="attr-card group relative overflow-hidden rounded-3xl glass-card h-[300px]" data-category="relax">
+        <img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBylZYjMA1-zylwPhdFhmibZ7bnrfo28d1rn3zGpj1f5BRrgeKDLBrqVDpnpIi5C0KwiMfAZGxrI5MeYuY_fQ28zXivXv-UzTPt1R8hqI_xgcYSkHBTSa-UMulA-U36XXkKqR00oOwW9LyoPFEuQ8oJXyI4GGpsQa9d0F3YtYDkZqHuNYBdeBt1s2SjQ2k98UgGLfGN-K0fr0gfW3GdXZ_z2IMeaTquJjtxkSkAaOqkr5MDc6kXprctPugT7R6Bmtqs2EubBcujS_s" alt="Lagoon Retreat Cabanas"/>
+        <div class="absolute inset-0 bg-gradient-to-t from-on-surface/70 via-transparent to-transparent opacity-60"></div>
+        <div class="absolute bottom-0 left-0 p-8 w-full">
+          <h3 class="font-['Montserrat'] font-bold text-2xl text-white mb-2">Lagoon Retreat</h3>
+          <p class="text-sm text-white/85 opacity-0 group-hover:opacity-100 transition-all duration-300">Private luxury cabanas with dedicated concierge service in a lush artificial lagoon.</p>
+        </div>
+      </div>
+
+      <!-- Pool Bar -->
+      <div class="attr-card group relative overflow-hidden rounded-3xl glass-card h-[300px]" data-category="dining">
+        <img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJ_FLk233IIqI-V0aMZ9S1BmClqrXuBLbaUgW6qvbraMcOvzv_L4Hc4UN5vd6rEcFr68To0TJ0YmLDdncfbxxRrZikNMchEDLclgbiYO9WpWIKYTrcFEB2s71ZklsZsufQMCotxQo4FwM5-3D_I4uSTIPMJf2AjoWkGEBf45YetoB_KpBP9kynpCr85elyoLm2X8ggHL_ubH_PlH4Io6jrzUi7eHOxk62wmPJCrJHJdxvH8z3S0SwiaHj2wBlUEl-goUBweCco-dc" alt="Sunset Pool Bar"/>
+        <div class="absolute inset-0 bg-gradient-to-t from-secondary/80 via-transparent to-transparent opacity-60"></div>
+        <div class="absolute top-4 left-4">
+          <span class="bg-secondary text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Open Bar</span>
+        </div>
+        <div class="absolute bottom-0 left-0 p-8 w-full">
+          <h3 class="font-['Montserrat'] font-bold text-2xl text-white mb-2">Sunset Pool Bar</h3>
+          <p class="text-sm text-white/85 opacity-0 group-hover:opacity-100 transition-all duration-300">Gourmet cocktails and tropical snacks served poolside by our expert mixologists.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ ELITE AMENITIES ═══════════════════════ -->
+  <section class="py-[120px] bg-surface-container-low relative overflow-hidden">
+    <div class="absolute top-0 left-0 w-full overflow-hidden leading-[0] rotate-180">
+      <svg class="relative block w-full h-16 fill-background" viewBox="0 0 1200 80" preserveAspectRatio="none">
+        <path d="M0,40 C200,80 400,0 600,40 C800,80 1000,0 1200,40 L1200,80 L0,80 Z"/>
+      </svg>
+    </div>
+    <div class="max-w-[1280px] mx-auto px-4 md:px-16">
+      <div class="text-center mb-16 reveal">
+        <span class="text-secondary font-bold tracking-[0.2em] uppercase text-xs">Beyond the Rides</span>
+        <h2 class="font-['Montserrat'] font-bold text-[clamp(32px,4vw,48px)] tracking-tight mt-4">Elite Amenities</h2>
+        <p class="text-on-surface-variant mt-4 max-w-xl mx-auto">Thoughtfully curated comforts for discerning guests who expect only the best.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+        <div class="reveal">
+          <div class="rounded-[40px] overflow-hidden h-[320px] shadow-2xl">
+            <img class="w-full h-full object-cover hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCOK8vYDkOE-2-BexsCBHrA29ppQcc_3atjyAgFbVGWHKR20O5MDErwU46nvo80WmamDbvKPWMC9E9ixP-igIWgiC1FxDQwpyUnY4JYqiiahRUerNxFwJANBCqALlxfvmlx6koZss5XsPnoqlFwvtuqG9ysWY27MQVh9g88R-uetNZdL0o1zaiznEXNy7IudnmRONcnjBT7wAHJUbHuMiAJxIRI2eeLPKkYd5zwZa7TKEy_J10r7DmtGz_gWvhp_88uejVDZk8UJ28" alt="Private Poolside Cabana"/>
+          </div>
+          <div class="mt-6 glass-card rounded-3xl p-6">
+            <h3 class="font-['Montserrat'] font-bold text-2xl mb-2">Private Cabana Suites</h3>
+            <p class="text-on-surface-variant text-sm leading-relaxed">Plush oversized cushions, chilled refreshments, and exclusive concierge service. Your private oasis within the park.</p>
+          </div>
+        </div>
+        <div class="reveal" style="transition-delay:0.15s">
+          <div class="rounded-[40px] overflow-hidden h-[320px] shadow-2xl">
+            <img class="w-full h-full object-cover hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBb07Blmi99bi5BTuSyzS9Ij2HScQ4C-AEp884BpY8mlL2ShlVkPFHDjwxcWNdogWehfuBanxZVavQQf-B1a8xwnybk-ZOFpQ3L_XXiat2CRHmCTS5_WPFg2RiDJN8VkAe6QgTbnel7THiBx61KJt0k-bt0Krt92cRxGVm1rb1yjsILJ3I29fM4QuduIMReuWRk0w4ngDpJEjKnfZy8GDwoN0b8vCFCYlyj_7peo2rphaa5KtCpqtuFAaok5bNDm5gv-yt6FyMzgf8" alt="Premium Resort Bar"/>
+          </div>
+          <div class="mt-6 glass-card rounded-3xl p-6">
+            <h3 class="font-['Montserrat'] font-bold text-2xl mb-2">Aqua Gourmet Bar</h3>
+            <p class="text-on-surface-variant text-sm leading-relaxed">Polished marble counters, expert bartenders in elegant uniforms, and a menu of tropical signature cocktails.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Amenities list -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 reveal">
+        <div class="glass-card rounded-2xl p-6 text-center">
+          <span class="material-symbols-outlined text-primary text-4xl block mb-3">spa</span>
+          <h4 class="font-bold mb-1">Aqua Spa</h4>
+          <p class="text-on-surface-variant text-xs">Hydrotherapy treatments and premium skincare rituals</p>
+        </div>
+        <div class="glass-card rounded-2xl p-6 text-center">
+          <span class="material-symbols-outlined text-primary text-4xl block mb-3">restaurant</span>
+          <h4 class="font-bold mb-1">Fine Dining</h4>
+          <p class="text-on-surface-variant text-xs">Pan-Indian and continental cuisine with ocean views</p>
+        </div>
+        <div class="glass-card rounded-2xl p-6 text-center">
+          <span class="material-symbols-outlined text-primary text-4xl block mb-3">camera_alt</span>
+          <h4 class="font-bold mb-1">Pro Photography</h4>
+          <p class="text-on-surface-variant text-xs">On-ride and lifestyle photography by our pro team</p>
+        </div>
+        <div class="glass-card rounded-2xl p-6 text-center">
+          <span class="material-symbols-outlined text-primary text-4xl block mb-3">local_parking</span>
+          <h4 class="font-bold mb-1">Valet Parking</h4>
+          <p class="text-on-surface-variant text-xs">Complimentary valet with premium vehicle care</p>
+        </div>
+      </div>
+    </div>
+    <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-[0]">
+      <svg class="relative block w-full h-16 fill-background" viewBox="0 0 1200 80" preserveAspectRatio="none">
+        <path d="M0,40 C200,0 400,80 600,40 C800,0 1000,80 1200,40 L1200,80 L0,80 Z"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ CTA ═══════════════════════ -->
+  <section class="py-[120px] px-4 md:px-16 text-center reveal">
+    <div class="max-w-2xl mx-auto">
+      <h2 class="font-['Montserrat'] font-bold text-[clamp(32px,5vw,56px)] tracking-tight mb-6">Ready for an Unforgettable Day?</h2>
+      <p class="text-on-surface-variant text-lg mb-10">Book your experience now and unlock India's most extraordinary aquatic adventure.</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="pricing.html" class="sunset-glow text-white px-10 py-5 rounded-full font-bold text-base inline-block">Book Tickets Now</a>
+        <a href="pricing.html" class="border-2 border-primary text-primary px-10 py-5 rounded-full font-bold text-base inline-block hover:bg-primary hover:text-white transition-all">View Pricing</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ═══════════════════════ FOOTER ═══════════════════════ -->
+<footer class="bg-surface-container-highest border-t border-black/5">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-4 md:px-16 py-16 max-w-[1280px] mx-auto">
+    <div>
+      <div class="flex items-center gap-2 mb-6">
+        <span class="material-symbols-outlined text-primary text-3xl">waves</span>
+        <span class="font-['Montserrat'] font-bold text-2xl text-primary tracking-tight">AquaVenture</span>
+      </div>
+      <p class="text-on-surface-variant text-sm leading-relaxed mb-6">India's leading name in luxury aquatic entertainment and premium resort experiences.</p>
+    </div>
+    <div>
+      <h4 class="font-bold text-on-surface mb-6 uppercase tracking-wider text-xs">Quick Links</h4>
+      <ul class="space-y-3 text-on-surface-variant text-sm">
+        <li><a class="hover:text-primary transition-all" href="attractions.html">Attractions</a></li>
+        <li><a class="hover:text-primary transition-all" href="pricing.html">Pricing</a></li>
+        <li><a class="hover:text-primary transition-all" href="#">Safety Protocol</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="font-bold text-on-surface mb-6 uppercase tracking-wider text-xs">Support</h4>
+      <ul class="space-y-3 text-on-surface-variant text-sm">
+        <li><a class="hover:text-primary transition-all" href="#">Help Center</a></li>
+        <li><a class="hover:text-primary transition-all" href="#">Contact Us</a></li>
+        <li><a class="hover:text-primary transition-all" href="#">Privacy Policy</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="font-bold text-on-surface mb-6 uppercase tracking-wider text-xs">Location</h4>
+      <p class="text-on-surface-variant text-sm mb-2">Elite Coastline Road, Sector 45<br/>Goa, India – 403001</p>
+      <p class="text-on-surface-variant text-sm">Open Daily: 10 AM – 8 PM</p>
+    </div>
+  </div>
+  <div class="max-w-[1280px] mx-auto px-4 md:px-16 py-6 border-t border-black/5 flex flex-col md:flex-row justify-between items-center gap-4">
+    <p class="text-on-surface-variant text-sm">© 2025 AquaVenture India. Premium Resort Experience.</p>
+    <div class="flex gap-6 text-sm font-bold text-on-surface-variant">
+      <a class="hover:text-primary transition-all" href="#">Terms</a>
+      <a class="hover:text-primary transition-all" href="#">Cookie Policy</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  revealEls.forEach(el => observer.observe(el));
+
+  // Mobile menu
+  document.getElementById('hamburger').addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.toggle('open');
+  });
+
+  // Filter
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const attrCards = document.querySelectorAll('.attr-card');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active', 'border-primary', 'text-white'));
+      filterBtns.forEach(b => { b.classList.add('border-outline-variant', 'text-on-surface-variant'); });
+      btn.classList.add('active');
+      btn.classList.remove('border-outline-variant', 'text-on-surface-variant');
+      const filter = btn.dataset.filter;
+      attrCards.forEach(card => {
+        if (filter === 'all' || card.dataset.category === filter) {
+          card.style.display = '';
+          setTimeout(() => card.style.opacity = '1', 10);
+        } else {
+          card.style.opacity = '0';
+          setTimeout(() => card.style.display = 'none', 300);
+        }
+      });
+    });
+  });
+</script>
+</body>
+</html>
